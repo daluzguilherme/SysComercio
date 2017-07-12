@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace CamadaDados
 {
-    class DCategoria
+    public class DCategoria
     {
         private int _Idcategoria;
         private string _Nome;
@@ -83,6 +83,8 @@ namespace CamadaDados
                     sqlCon.Close();
                 }
             }
+
+            return resp;
         }
 
         //Metodo Editar
@@ -134,6 +136,8 @@ namespace CamadaDados
                     sqlCon.Close();
                 }
             }
+
+            return resp;
         }
 
         //Metodo Excluir
@@ -171,10 +175,12 @@ namespace CamadaDados
                     sqlCon.Close();
                 }
             }
+
+            return resp;
         }
 
         //Metodo Mostrar
-        public DataTable Mostrar(DCategoria Categoria)
+        public DataTable Mostrar()
         {
             DataTable DtResultado = new DataTable("categorias");
 
@@ -200,6 +206,8 @@ namespace CamadaDados
                     sqlCon.Close();
                 }
             }
+
+            return DtResultado;
         }
 
         //Metodo Buscar Nome
@@ -236,6 +244,9 @@ namespace CamadaDados
                     sqlCon.Close();
                 }
             }
+
+            return DtResultado;
+
         }
 
     }
