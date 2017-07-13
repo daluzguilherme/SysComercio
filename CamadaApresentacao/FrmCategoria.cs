@@ -79,7 +79,7 @@ namespace CamadaApresentacao
         private void ocultarColunas()
         {
             this.dataLista.Columns[0].Visible = false;
-            this.dataLista.Columns[1].Visible = false;
+            //this.dataLista.Columns[1].Visible = false;
         }
 
         //mostrar no data grid
