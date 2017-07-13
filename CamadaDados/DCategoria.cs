@@ -15,239 +15,293 @@ namespace CamadaDados
         private string _Descricao;
         private string _TextoBuscar;
 
-        public int Idcategoria { get => _Idcategoria; set => _Idcategoria = value; }
-        public string Nome { get => _Nome; set => _Nome = value; }
-        public string Descricao { get => _Descricao; set => _Descricao = value; }
-        public string TextoBuscar { get => _TextoBuscar; set => _TextoBuscar = value; }
-
-        //Construtor vazio
-        public DCategoria()
+        public int Idcategoria
         {
+            get
+            {
+                return _Idcategoria;
+            }
+
+            set
+            {
+                _Idcategoria = value;
+            }
         }
 
-        //Construtor com param
+        public string Nome
+        {
+            get
+            {
+                return _Nome;
+            }
+
+            set
+            {
+                _Nome = value;
+            }
+        }
+
+        public string Descricao
+        {
+            get
+            {
+                return _Descricao;
+            }
+
+            set
+            {
+                _Descricao = value;
+            }
+        }
+
+        public string TextoBuscar
+        {
+            get
+            {
+                return _TextoBuscar;
+            }
+
+            set
+            {
+                _TextoBuscar = value;
+            }
+        }
+
+        //Construtor Vazio
+
+        public DCategoria()
+        {
+
+        }
+
+
+        //Construtor com Parametros
         public DCategoria(int idcategoria, string nome, string descricao, string textobuscar)
         {
             this.Idcategoria = idcategoria;
             this.Nome = nome;
             this.Descricao = descricao;
             this.TextoBuscar = textobuscar;
+
         }
 
-        //Metodo Inserir
+
+        //Método Inserir
         public string Inserir(DCategoria Categoria)
         {
             string resp = "";
-            SqlConnection sqlCon = new SqlConnection();
+            SqlConnection SqlCon = new SqlConnection();
             try
             {
-                sqlCon.ConnectionString = Conexao.Cn;
-                sqlCon.Open();
+                //codigo
+                SqlCon.ConnectionString = Conexao.Cn;
+                SqlCon.Open();
 
-                SqlCommand sqlCmd = new SqlCommand();
-                sqlCmd.Connection = sqlCon;
-                sqlCmd.CommandText = "spinserir_categoria";
-                sqlCmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand SqlCmd = new SqlCommand();
+                SqlCmd.Connection = SqlCon;
+                SqlCmd.CommandText = "spinserir_categoria";
+                SqlCmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter ParIdcategoria = new SqlParameter();
                 ParIdcategoria.ParameterName = "@idcategoria";
-                ParIdcategoria.SqlDbType = SqlDbType.Int;
+                ParIdcategoria.SqlDbType=SqlDbType.Int;
                 ParIdcategoria.Direction = ParameterDirection.Output;
-                sqlCmd.Parameters.Add(ParIdcategoria);
+                SqlCmd.Parameters.Add(ParIdcategoria);
+
 
                 SqlParameter ParNome = new SqlParameter();
                 ParNome.ParameterName = "@nome";
                 ParNome.SqlDbType = SqlDbType.VarChar;
                 ParNome.Size = 50;
                 ParNome.Value = Categoria.Nome;
-                sqlCmd.Parameters.Add(ParNome);
+                SqlCmd.Parameters.Add(ParNome);
 
-                SqlParameter ParDescriao = new SqlParameter();
-                ParDescriao.ParameterName = "@nome";
-                ParDescriao.SqlDbType = SqlDbType.VarChar;
-                ParDescriao.Size = 100;
-                ParDescriao.Value = Categoria.Descricao;
-                sqlCmd.Parameters.Add(ParDescriao);
 
-                //Executa o comando
-                resp = sqlCmd.ExecuteNonQuery()==1? "Ok" : "Registro não foi inserido";
+                SqlParameter ParDescricao = new SqlParameter();
+                ParDescricao.ParameterName = "@descricao";
+                ParDescricao.SqlDbType = SqlDbType.VarChar;
+                ParDescricao.Size = 256;
+                ParDescricao.Value = Categoria.Descricao;
+                SqlCmd.Parameters.Add(ParDescricao);
+
+                //Executar o comando
+
+                resp = SqlCmd.ExecuteNonQuery() == 1 ? "OK" : "Registro não foi Inserido";
+
+
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 resp = ex.Message;
             }
+
             finally
             {
-                if(sqlCon.State == ConnectionState.Open)
-                {
-                    sqlCon.Close();
-                }
+                if(SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
-
             return resp;
+
         }
 
-        //Metodo Editar
+
+        //Método Editar
         public string Editar(DCategoria Categoria)
         {
             string resp = "";
-            SqlConnection sqlCon = new SqlConnection();
+            SqlConnection SqlCon = new SqlConnection();
             try
             {
-                sqlCon.ConnectionString = Conexao.Cn;
-                sqlCon.Open();
+                //codigo
+                SqlCon.ConnectionString = Conexao.Cn;
+                SqlCon.Open();
 
-                SqlCommand sqlCmd = new SqlCommand();
-                sqlCmd.Connection = sqlCon;
-                sqlCmd.CommandText = "speditar_categoria";
-                sqlCmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand SqlCmd = new SqlCommand();
+                SqlCmd.Connection = SqlCon;
+                SqlCmd.CommandText = "speditar_categoria";
+                SqlCmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter ParIdcategoria = new SqlParameter();
                 ParIdcategoria.ParameterName = "@idcategoria";
                 ParIdcategoria.SqlDbType = SqlDbType.Int;
                 ParIdcategoria.Value = Categoria.Idcategoria;
-                sqlCmd.Parameters.Add(ParIdcategoria);
+                SqlCmd.Parameters.Add(ParIdcategoria);
+
 
                 SqlParameter ParNome = new SqlParameter();
                 ParNome.ParameterName = "@nome";
                 ParNome.SqlDbType = SqlDbType.VarChar;
                 ParNome.Size = 50;
                 ParNome.Value = Categoria.Nome;
-                sqlCmd.Parameters.Add(ParNome);
+                SqlCmd.Parameters.Add(ParNome);
 
-                SqlParameter ParDescriao = new SqlParameter();
-                ParDescriao.ParameterName = "@nome";
-                ParDescriao.SqlDbType = SqlDbType.VarChar;
-                ParDescriao.Size = 100;
-                ParDescriao.Value = Categoria.Descricao;
-                sqlCmd.Parameters.Add(ParDescriao);
 
-                //Executa o comando
-                resp = sqlCmd.ExecuteNonQuery() == 1 ? "Ok" : "A edição nao foi feita";
+                SqlParameter ParDescricao = new SqlParameter();
+                ParDescricao.ParameterName = "@descricao";
+                ParDescricao.SqlDbType = SqlDbType.VarChar;
+                ParDescricao.Size = 256;
+                ParDescricao.Value = Categoria.Descricao;
+                SqlCmd.Parameters.Add(ParDescricao);
+
+                //Executar o comando
+
+                resp = SqlCmd.ExecuteNonQuery() == 1 ? "OK" : "A edição não foi feita";
+
+
             }
             catch (Exception ex)
             {
                 resp = ex.Message;
             }
+
             finally
             {
-                if (sqlCon.State == ConnectionState.Open)
-                {
-                    sqlCon.Close();
-                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
-
             return resp;
+
         }
 
-        //Metodo Excluir
+
+        //Método Excluir
         public string Excluir(DCategoria Categoria)
         {
             string resp = "";
-            SqlConnection sqlCon = new SqlConnection();
+            SqlConnection SqlCon = new SqlConnection();
             try
             {
-                sqlCon.ConnectionString = Conexao.Cn;
-                sqlCon.Open();
+                //codigo
+                SqlCon.ConnectionString = Conexao.Cn;
+                SqlCon.Open();
 
-                SqlCommand sqlCmd = new SqlCommand();
-                sqlCmd.Connection = sqlCon;
-                sqlCmd.CommandText = "spdeletar_categoria";
-                sqlCmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand SqlCmd = new SqlCommand();
+                SqlCmd.Connection = SqlCon;
+                SqlCmd.CommandText = "spdeletar_categoria";
+                SqlCmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter ParIdcategoria = new SqlParameter();
                 ParIdcategoria.ParameterName = "@idcategoria";
                 ParIdcategoria.SqlDbType = SqlDbType.Int;
                 ParIdcategoria.Value = Categoria.Idcategoria;
-                sqlCmd.Parameters.Add(ParIdcategoria);
-                
-                //Executa o comando
-                resp = sqlCmd.ExecuteNonQuery() == 1 ? "Ok" : "A exclusão nao foi feita";
+                SqlCmd.Parameters.Add(ParIdcategoria);
+
+
+
+                //Executar o comando
+
+                resp = SqlCmd.ExecuteNonQuery() == 1 ? "OK" : "A exclusão não foi feita";
+
+
             }
             catch (Exception ex)
             {
                 resp = ex.Message;
             }
+
             finally
             {
-                if (sqlCon.State == ConnectionState.Open)
-                {
-                    sqlCon.Close();
-                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
-
             return resp;
         }
 
-        //Metodo Mostrar
+
+        //Método Mostrar
         public DataTable Mostrar()
         {
-            DataTable DtResultado = new DataTable("categorias");
-
-            SqlConnection sqlCon = new SqlConnection();
+            DataTable DtResultado = new DataTable("categoria");
+            SqlConnection SqlCon = new SqlConnection();
             try
             {
-                sqlCon.ConnectionString = Conexao.Cn;
-                SqlCommand sqlCmd = new SqlCommand();
-                sqlCmd.Connection = sqlCon;
-                sqlCmd.CommandText = "spmostrar_categoria";
-                sqlCmd.CommandType = CommandType.StoredProcedure;
-                SqlDataAdapter sqlDat = new SqlDataAdapter(sqlCmd);
+                SqlCon.ConnectionString = Conexao.Cn;
+                SqlCommand SqlCmd = new SqlCommand();
+                SqlCmd.Connection = SqlCon;
+                SqlCmd.CommandText = "spmostrar_categoria";
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter sqlDat = new SqlDataAdapter(SqlCmd);
                 sqlDat.Fill(DtResultado);
-            }
-            catch (Exception ex)
+
+         }catch(Exception ex)
             {
                 DtResultado = null;
             }
-            finally
-            {
-                if (sqlCon.State == ConnectionState.Open)
-                {
-                    sqlCon.Close();
-                }
-            }
-
             return DtResultado;
+
         }
 
-        //Metodo Buscar Nome
+
+        //Método Buscar Nome
         public DataTable BuscarNome(DCategoria Categoria)
         {
-            DataTable DtResultado = new DataTable("categorias");
-
-            SqlConnection sqlCon = new SqlConnection();
+            DataTable DtResultado = new DataTable("categoria");
+            SqlConnection SqlCon = new SqlConnection();
             try
             {
-                sqlCon.ConnectionString = Conexao.Cn;
-                SqlCommand sqlCmd = new SqlCommand();
-                sqlCmd.Connection = sqlCon;
-                sqlCmd.CommandText = "spbuscar_nome";
-                sqlCmd.CommandType = CommandType.StoredProcedure;
-                SqlDataAdapter sqlDat = new SqlDataAdapter(sqlCmd);
-                sqlDat.Fill(DtResultado);
+                SqlCon.ConnectionString = Conexao.Cn;
+                SqlCommand SqlCmd = new SqlCommand();
+                SqlCmd.Connection = SqlCon;
+                SqlCmd.CommandText = "spbuscar_nome";
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+                
 
                 SqlParameter ParTextoBuscar = new SqlParameter();
                 ParTextoBuscar.ParameterName = "@textobuscar";
                 ParTextoBuscar.SqlDbType = SqlDbType.VarChar;
                 ParTextoBuscar.Size = 50;
                 ParTextoBuscar.Value = Categoria.TextoBuscar;
-                sqlCmd.Parameters.Add(ParTextoBuscar);
+                SqlCmd.Parameters.Add(ParTextoBuscar);
+
+                SqlDataAdapter sqlDat = new SqlDataAdapter(SqlCmd);
+                sqlDat.Fill(DtResultado);
+
             }
             catch (Exception ex)
             {
                 DtResultado = null;
             }
-            finally
-            {
-                if (sqlCon.State == ConnectionState.Open)
-                {
-                    sqlCon.Close();
-                }
-            }
-
             return DtResultado;
 
         }
 
     }
+    
 }
