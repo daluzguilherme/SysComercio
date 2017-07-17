@@ -117,7 +117,16 @@ namespace CamadaApresentacao
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            if (this.txtIdCategoria.Text.Equals(""))
+            {
+                this.MensagemErro("Selecione um registro para editar");
+            }
+            else
+            {
+                this.eEditar = true;
+                this.botoes();
+                this.Habilitar(true);
+            }
         }
 
         private void FrmCategoria_Load(object sender, EventArgs e)
@@ -211,6 +220,17 @@ namespace CamadaApresentacao
             this.txtDescricao.Text = Convert.ToString(this.dataLista.CurrentRow.Cells["descricao"].Value);
 
             this.tabControl1.SelectedIndex = 1;
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.eNovo = false;
+            this.eEditar = false;
+            this.botoes();
+            this.Habilitar(false);
+            this.Limpar();
+
+            this.tabControl1.SelectedIndex = 0;
         }
     }
 }
