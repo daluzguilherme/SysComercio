@@ -138,5 +138,70 @@ namespace CamadaApresentacao
         {
             this.BuscarNome();
         }
+
+        private void btnNovo_Click(object sender, EventArgs e)
+        {
+            this.eNovo = true;
+            this.eEditar = true;
+            this.botoes();
+            this.Limpar();
+            this.Habilitar(true);
+            this.txtNome.Focus();
+            this.txtIdCategoria.Enabled = false;
+
+        }
+
+        private void btnSalvar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string resp = "";
+                if (this.txtNome.Text == string.Empty)
+                {
+                    MensagemErro("Preencha Todos os Campos");
+                    errorIcone.SetError(txtNome, "Insira o nome");
+                }
+                else
+                {
+                    if (this.eNovo)
+                    {
+                        resp = NCategoria.Inserir(this.txtNome.Text.Trim().ToUpper(), txtDescricao.Text.Trim());
+                    }
+                    else
+                    {
+                        resp = NCategoria.Editar(Convert.ToInt32(this.txtIdCategoria.Text.Trim()),
+                            this.txtNome.Text.Trim().ToUpper(), txtDescricao.Text.Trim());
+                    }
+
+                    if (resp.Equals("OK"))
+                    {
+                        if (this.eNovo)
+                        {
+                            this.MensagemOk("Registro Salvo com Sucesso");
+                        }
+                        else
+                        {
+                            this.MensagemOk("Registro Modificado com Sucesso");
+
+                        }
+                    }
+                    else
+                    {
+                        this.MensagemErro(resp);
+                    }
+
+                    this.eNovo = false;
+                    this.eEditar = false;
+                    this.botoes();
+                    this.Limpar();
+                    this.Mostrar();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + ex.StackTrace) ;
+            }
+        }
     }
 }
