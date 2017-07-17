@@ -129,6 +129,7 @@
             this.dataLista.Size = new System.Drawing.Size(669, 206);
             this.dataLista.TabIndex = 6;
             this.dataLista.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataLista_CellContentClick);
+            this.dataLista.DoubleClick += new System.EventHandler(this.dataLista_DoubleClick);
             // 
             // Deletar
             // 

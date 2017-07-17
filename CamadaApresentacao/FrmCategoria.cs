@@ -203,5 +203,14 @@ namespace CamadaApresentacao
                 MessageBox.Show(ex.Message + ex.StackTrace) ;
             }
         }
+
+        private void dataLista_DoubleClick(object sender, EventArgs e)
+        {
+            this.txtIdCategoria.Text = Convert.ToString(this.dataLista.CurrentRow.Cells["idcategoria"].Value);
+            this.txtNome.Text = Convert.ToString(this.dataLista.CurrentRow.Cells["nome"].Value);
+            this.txtDescricao.Text = Convert.ToString(this.dataLista.CurrentRow.Cells["descricao"].Value);
+
+            this.tabControl1.SelectedIndex = 1;
+        }
     }
 }
