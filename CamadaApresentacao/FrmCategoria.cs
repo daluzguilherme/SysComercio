@@ -107,7 +107,11 @@ namespace CamadaApresentacao
 
         private void dataLista_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (e.ColumnIndex == dataLista.Columns["Deletar"].Index)
+            {
+                DataGridViewCheckBoxCell ChkDeletar = (DataGridViewCheckBoxCell) dataLista.Rows[e.RowIndex].Cells["Deletar"];
+                ChkDeletar.Value = !Convert.ToBoolean(ChkDeletar.Value);
+            }
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -231,6 +235,57 @@ namespace CamadaApresentacao
             this.Limpar();
 
             this.tabControl1.SelectedIndex = 0;
+        }
+
+        private void btnDeletar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult Opcao;
+                Opcao = MessageBox.Show("Realmente deseja apagar o Registro?", "Sistema Comércio", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (Opcao == DialogResult.OK)
+                {
+                    string Codigo, Resp = "";
+
+                    foreach(DataGridViewRow row in dataLista.Rows)
+                    {
+                        if (Convert.ToBoolean(row.Cells[0].Value))
+                        {
+                            Codigo = Convert.ToString(row.Cells[1].Value);
+                            Resp = NCategoria.Excluir(Convert.ToInt32(Codigo));
+
+                            if (Resp.Equals("OK"))
+                            {
+                                this.MensagemOk("Registro excluido com sucesso.");
+                            }
+                            else
+                            {
+                                this.MensagemErro(Resp);
+                            }
+                        }
+                    }
+                    this.Mostrar();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + ex.StackTrace);
+            }
+        }
+
+        private void chkDeletar_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkDeletar.Checked)
+            {
+                this.dataLista.Columns[0].Visible = true;
+            }
+            else
+            {
+                this.dataLista.Columns[0].Visible = false;
+            }
         }
     }
 }
